@@ -2,8 +2,14 @@ use std::env;
 use std::io::Error;
 use std::fs;
 
+//naive interpreter
 mod naive_interpreter;
-use naive_interpreter::naive_interpreter::interpret;
+// use naive_interpreter::naive_interpreter::interpret;
+
+//AST interpreter
+mod AST_interpreter;
+use AST_interpreter::AST_interpreter::interpret;
+
 
 fn main() -> Result<(), Error>{
     let args: Vec<String> = env::args().collect();
@@ -14,6 +20,7 @@ fn main() -> Result<(), Error>{
         Err(e) => return Err(e),
     };
 
+    // interpret(&code);
     interpret(&code);
     Ok(())
 }
