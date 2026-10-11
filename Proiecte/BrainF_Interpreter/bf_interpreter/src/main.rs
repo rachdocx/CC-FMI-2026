@@ -2,8 +2,8 @@ use std::env;
 use std::io::Error;
 use std::fs;
 
-mod interpreter;
-use interpreter::interpreter::interpret;
+mod naive_interpreter;
+use naive_interpreter::naive_interpreter::interpret;
 
 fn main() -> Result<(), Error>{
     let args: Vec<String> = env::args().collect();

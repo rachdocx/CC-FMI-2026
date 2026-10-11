@@ -1,4 +1,7 @@
-pub mod interpreter {
+//this interpreter moves the pointer one step at a time, accordingly to the BF
+//and changes the tape, doing nothing smart
+// no syntax checking, no error checking, no tape memory issues checking 
+pub mod naive_interpreter {
     const TAPE_SIZE: usize = 30_000;
 
     pub fn interpret(code: &str){
@@ -6,7 +9,7 @@ pub mod interpreter {
         let mut pointer = 0;
         let mut i = 0;
 
-        let bytes = code.as_bytes(); //why??
+        let bytes = code.as_bytes();
         while  i < bytes.len() {
 
             match bytes[i] {
