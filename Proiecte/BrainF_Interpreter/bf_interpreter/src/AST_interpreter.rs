@@ -1,41 +1,42 @@
-pub mod AST_interpreter{
+pub mod ast_interpreter{
 
     #[derive(Debug)]
-    pub enum instruction {
-        inc(u32),
-        dec(u32),
-        move_left(u32),
-        move_right(u32),
-        print_to_ascii,
-        Loop(Vec<instruction>)
+    #[derive(PartialEq)]
+    pub enum Instruction {
+        Inc(u32),
+        Dec(u32),
+        MoveLeft(u32),
+        MoveRight(u32),
+        PrintToAscii,
+        Loop(Vec<Instruction>)
     }
     const TAPE_SIZE: usize = 30_000;
 
-    pub fn parser(code: &str) -> Result<Vec<instruction>, String>{
+    pub fn parser(code: &str) -> Result<Vec<Instruction>, String>{
 
-        let mut stack: Vec<Vec<instruction>>  = vec![Vec::new()];
+        let mut stack: Vec<Vec<Instruction>>  = vec![Vec::new()];
 
         for byte in code.bytes() {
 
             match byte {
                 b'<' => {
-                    stack.last_mut().unwrap().push(instruction::move_left(1));
+                    stack.last_mut().unwrap().push(Instruction::MoveLeft(1));
                 }
 
                 b'>' => {
-                    stack.last_mut().unwrap().push(instruction::move_right(1));
+                    stack.last_mut().unwrap().push(Instruction::MoveRight(1));
                 }
 
                 b'+' => {
-                    stack.last_mut().unwrap().push(instruction::inc(1));
+                    stack.last_mut().unwrap().push(Instruction::Inc(1));
                 }
 
                 b'-' => {
-                    stack.last_mut().unwrap().push(instruction::dec(1));
+                    stack.last_mut().unwrap().push(Instruction::Dec(1));
                 }
 
                 b'.' => {
-                    stack.last_mut().unwrap().push(instruction::print_to_ascii)
+                    stack.last_mut().unwrap().push(Instruction::PrintToAscii)
                 }
                 
                 b'[' => {
@@ -48,7 +49,7 @@ pub mod AST_interpreter{
                         return Err("Syntax Error: Unmatched '[' ".to_string());
                     }
                     let inner_loop = stack.pop().unwrap();
-                    stack.last_mut().unwrap().push(instruction::Loop(inner_loop));
+                    stack.last_mut().unwrap().push(Instruction::Loop(inner_loop));
                 }
 
                 _ => {
@@ -61,7 +62,7 @@ pub mod AST_interpreter{
         if stack.len() > 1{
             return Err("Syntax Error: Unmatched '['".to_string());
         }
-        
+
         let ast = stack.pop().unwrap();
         
         // dbg!(&ast);
@@ -81,37 +82,39 @@ pub mod AST_interpreter{
         // dbg!(ast);
     }
 
-    fn execute(instructions: &[instruction], tape: &mut [u32], pointer: &mut usize){
+    fn execute(instructions: &[Instruction], tape: &mut [u32], pointer: &mut usize){
         for instruction in instructions{
             match instruction{
-                instruction::inc(amount) => {
+                Instruction::Inc(amount) => {
                     tape[*pointer] = tape[*pointer] + amount;
                 }
 
-                instruction::dec(amount) =>{
+                Instruction::Dec(amount) =>{
                     tape[*pointer] = tape[*pointer] - amount;
                 }
 
-                instruction::move_left(amount) => {
-                    *pointer -= 1;
+                Instruction::MoveLeft(amount) => {
+                    *pointer -= *amount as usize;
                 }
 
-                instruction::move_right(amount) => {
-                    *pointer += 1;
+                Instruction::MoveRight(amount) => {
+                    *pointer += *amount as usize;
                 }
 
-                instruction::print_to_ascii => {
+                Instruction::PrintToAscii => {
                     print!("{}", tape[*pointer] as u8 as char);
                 }
 
-                instruction::Loop(inner_instructions) => {
+                Instruction::Loop(inner_instructions) => {
+
+                    if inner_instructions.len() == 1 && inner_instructions[0] == Instruction::Dec(1){
+                        tape[*pointer] = 0;
+                        dbg!("Handled [-] with no loops!");
+                    }
+
                     while tape [*pointer] != 0 {
                         execute(inner_instructions, tape, pointer);
                     }
-                }
-
-                _ => {
-
                 }
             }
         }

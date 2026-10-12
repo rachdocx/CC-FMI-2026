@@ -3,12 +3,13 @@ use std::io::Error;
 use std::fs;
 
 //naive interpreter
+#[allow(dead_code)]
 mod naive_interpreter;
 // use naive_interpreter::naive_interpreter::interpret;
 
 //AST interpreter
-mod AST_interpreter;
-use AST_interpreter::AST_interpreter::interpret;
+mod ast_interpreter;
+use ast_interpreter::ast_interpreter::interpret;
 
 
 fn main() -> Result<(), Error>{
