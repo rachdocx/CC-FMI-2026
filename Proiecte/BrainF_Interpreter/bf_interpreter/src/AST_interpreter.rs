@@ -43,10 +43,14 @@ pub mod AST_interpreter{
                 }
 
                 b']' => {
-                    let inner_loop = stack.pop().unwrap();
 
+                    if stack.len() < 2 {
+                        return Err("Syntax Error: Unmatched '[' ".to_string());
+                    }
+                    let inner_loop = stack.pop().unwrap();
                     stack.last_mut().unwrap().push(instruction::Loop(inner_loop));
                 }
+
                 _ => {
                     
                 }
@@ -54,7 +58,10 @@ pub mod AST_interpreter{
         }
 
         // dbg!(&stack);
-
+        if stack.len() > 1{
+            return Err("Syntax Error: Unmatched '['".to_string());
+        }
+        
         let ast = stack.pop().unwrap();
         
         // dbg!(&ast);
@@ -62,13 +69,15 @@ pub mod AST_interpreter{
         Ok(ast)
     }
 
-    pub fn interpret(code: &str){
+    pub fn interpret(code: &str) -> Result<(), String>{
         let mut tape: [u32; TAPE_SIZE] = [0; TAPE_SIZE];
         let mut pointer: usize = 0;
         
-        let ast = parser(&code).unwrap();
+        let ast = parser(&code)?;
 
         execute(&ast,&mut tape, &mut pointer);
+
+        Ok(())
         // dbg!(ast);
     }
 

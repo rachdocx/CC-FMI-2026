@@ -21,6 +21,14 @@ fn main() -> Result<(), Error>{
     };
 
     // interpret(&code);
-    interpret(&code);
+    match interpret(&code){
+        Ok(()) => {
+
+        }
+        Err(e) => {
+            println!("{}", e);
+        }
+    }
+
     Ok(())
 }
