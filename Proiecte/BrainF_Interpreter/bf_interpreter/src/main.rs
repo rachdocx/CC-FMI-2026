@@ -1,6 +1,7 @@
 use std::env;
 use std::io::Error;
 use std::fs;
+use colored::Colorize;
 
 //naive interpreter
 #[allow(dead_code)]
@@ -24,10 +25,10 @@ fn main() -> Result<(), Error>{
     // interpret(&code);
     match interpret(&code){
         Ok(()) => {
-
+     
         }
         Err(e) => {
-            println!("{}", e);
+            println!("{}", e.red());
         }
     }
 
