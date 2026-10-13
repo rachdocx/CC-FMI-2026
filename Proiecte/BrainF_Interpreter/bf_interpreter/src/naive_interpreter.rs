@@ -1,6 +1,10 @@
-//this interpreter moves the pointer one step at a time, accordingly to the BF
-//and changes the tape, doing nothing smart
-// no syntax checking, no error checking, no tape memory issues checking 
+/*
+    This interpreter moves the pointer one step at a time, accordingly to the BF
+    and changes the tape, doing nothing smart
+    
+    ! No syntax checking, No error checking, No tape memory issues checking 
+ */
+
 pub mod naive_interpreter {
     const TAPE_SIZE: usize = 30_000;
 

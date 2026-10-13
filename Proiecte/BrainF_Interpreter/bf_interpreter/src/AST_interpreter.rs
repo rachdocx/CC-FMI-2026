@@ -1,3 +1,20 @@
+/*
+    This implementation features an Abstract Syntax Tree that. Our parser() function build this Tree and tries to optimize the number 
+    of operation and idioms. The interpret() function then takes this AST with the optimized operations and modifies the TAPE at runtime.
+
+    We covered the next topics:
+
+        At Parse Time:
+            - Syntax Errors like unmatched loop paranthesis.
+            - Warnings for loops that might never end like [+].
+            - Optimization: Run Length Encoding: Instead of parsing into the the multiple instructions of the same type, we compress 
+              them into a single instruction with the amount number of repetead consecutive instruction. This applies for +, -, <, and >.
+    
+        At Runtime: 
+            - Optimization: Trying to find loops that respects a mathematical formula and instead of repeating instruction we change the tape
+              accordingly to that formula (i.e idioms)
+              Currently implemented: [-] is actually set the tape block to 0.
+*/
 pub mod ast_interpreter{
     use colored::Colorize;
 
