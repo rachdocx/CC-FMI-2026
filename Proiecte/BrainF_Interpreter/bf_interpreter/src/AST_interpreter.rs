@@ -1,5 +1,5 @@
 /*
-    This implementation features an Abstract Syntax Tree that. Our parser() function build this Tree and tries to optimize the number 
+    This implementation features an Abstract Syntax Tree. Our parser() function builds this Tree and tries to optimize the number 
     of operation and idioms. The interpret() function then takes this AST with the optimized operations and modifies the TAPE at runtime.
 
     We covered the next topics:
